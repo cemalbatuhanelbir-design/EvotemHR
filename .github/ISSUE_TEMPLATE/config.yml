@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: EVOTEM HR Community Support
+    url: https://github.com/evotem_hr-opensource/evotem_hr/discussions
+    about: Ask questions or discuss features here
+  - name: Documentation
+    url: https://evotem_hr-opensource.github.io/evotem_hr-docs/
+    about: Check the official EVOTEM HR documentation
