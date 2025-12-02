@@ -6,6 +6,29 @@
 
 ---
 
+## **Browse a Local Preview**
+
+You can spin up the application locally and open it in your browser without extra tooling:
+
+1. Copy the sample environment: `cp .env.dist .env` and set a unique `SECRET_KEY`, the expected `ALLOWED_HOSTS`, and an appropriate `CSRF_TRUSTED_ORIGINS` value.
+2. Create a virtual environment and install dependencies:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+3. Initialize the database:
+   ```bash
+   python manage.py migrate
+   ```
+4. Run the development server bound to your host interface:
+   ```bash
+   python manage.py runserver 0.0.0.0:8000
+   ```
+5. Visit `http://localhost:8000/` in your browser to explore the UI. For Docker users, `docker-compose up --build` will expose the same endpoint.
+
+---
+
 ## **Installation**
 
 EVOTEM HR can be installed on your system by following the steps below. Ensure you have **Python**, **Django**, and a **database** (preferably PostgreSQL) installed as prerequisites.
@@ -217,18 +240,19 @@ git pull evotem_hr master
 
 ### **3. Configure Environment Variables**
 
-1. Rename the environment file:
+1. Copy the example environment file without overwriting it:
    ```bash
-   mv .env.dist .env
+   cp .env.dist .env
    ```
 
-2. Edit the `.env` file and set the following values:
+2. Edit the `.env` file and set secure, environment-specific values. Start from the production-safe defaults below and adjust for local development when needed:
    ```env
-   DEBUG=True
-   TIME_ZONE=Asia/Kolkata
-   SECRET_KEY=django-insecure-j8op9)1q8$1&@^s&p*_0%d#pr@w9qj@lo=3#@d=a(^@9@zd@%j
-   ALLOWED_HOSTS=www.example.com,example.com,*
-   DB_INIT_PASSWORD=d3f6a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d
+   DEBUG=False                # Switch to True only for local development
+   TIME_ZONE=UTC              # Pick the IANA zone that matches your server
+   SECRET_KEY=change-me-with-a-unique-django-secret-key
+   ALLOWED_HOSTS=www.example.com,example.com
+   CSRF_TRUSTED_ORIGINS=https://www.example.com
+   DB_INIT_PASSWORD=
    DB_ENGINE=django.db.backends.postgresql
    DB_NAME=evotem_hr_main
    DB_USER=evotem_hr
@@ -236,6 +260,10 @@ git pull evotem_hr master
    DB_HOST=localhost
    DB_PORT=5432
    ```
+
+   - Use a unique `SECRET_KEY` for every deployment (generate one with `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`).
+   - Replace `ALLOWED_HOSTS` and `CSRF_TRUSTED_ORIGINS` with the exact hostnames that will serve the app.
+   - For local development, set `DEBUG=True` and include `localhost,127.0.0.1` in `ALLOWED_HOSTS`.
 
 ---
 
